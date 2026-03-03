@@ -4,18 +4,18 @@
 // API Endpoint returning JSON data of available/reserved tables for a specific pub
 
 // ดึงไฟล์ที่ใช้สำหรับเชื่อมต่อกับฐานข้อมูล โดยถอยออกมาหนึ่งโฟลเดอร์ (Include relative DB connection logic)
-require '../config/db_connect.php';
+require '../config/config.php';
 // กำหนดหัวของข้อมูลว่าเป็น JSON เพื่อให้ Javascript ฝั่ง Client อ่านได้ง่าย (Set explicitly JSON Content-Type headers)
 header('Content-Type: application/json');
 
 // Get parameters with null coalescing fallback 
 // (ดึงค่าจากพารามิเตอร์ URL ที่ผู้ใช้งานส่งเข้ามา หากไม่ส่งมาให้กำหนดตัวแปรให้เป็น null หรือ 0)
-$date = $_GET['date'] ?? null;
-$time = $_GET['time'] ?? null;
-$guests = $_GET['guests'] ?? 0;
+$date = $_POST['date'] ?? null;
+$time = $_POST['time'] ?? null;
+$guests = $_POST['guests'] ?? 0;
 // กำหนด pub_id เริ่มต้นให้เป็นค่า 1 (NightOwl HQ) เพื่อป้องกัน API พังกรณีไม่ส่งค่าสาขามา 
 // (Fallback default pub_id to 1 resolving older backward compatibilities organically)
-$pub_id = $_GET['pub_id'] ?? 1; // Default to 1 (NightOwl HQ) if not specified
+$pub_id = $_POST['pub_id'] ?? 1; // Default to 1 (NightOwl HQ) if not specified
 
 // ถ้าข้อมูลวันที่และเวลาขาดหายไปอันใดอันหนึ่ง ให้หยุดทำงานแล้วส่ง Error กลับ (If required inputs are missing, fail gracefully)
 if (!$date || !$time) {

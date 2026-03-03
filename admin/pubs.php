@@ -4,7 +4,7 @@
 // Admin backend page to manage pub locations/branches
 
 // เรียกใช้งานไฟล์ config เพื่อติดต่อฐานข้อมูลย้อนกลับไปหนึ่งโฟลเดอร์ (Include DB mapped back one directory)
-require '../config/db_connect.php';
+require '../config/config.php';
 // เรียกใช้ระบบเซสชัน (Include session logic)
 require '../includes/auth_session.php';
 // ตรวจสอบเช็คสิทธิ์ว่าเป็น admin หรือไม่ (Verify if the current session role is 'admin')
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     // ตรวจสอบข้อมูลจำเป็น (Validate required fields)
     if ($name && $location) {
         // เตรียม SQL สำหรับเพิ่มข้อมูลร้านใหม่ลงตาราง pubs (Prepare INSERT query for pubs table)
-        $stmt = $pdo->prepare("INSERT INTO pubs (name, location, description, image_url) VALUES (?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO pubs (pub_name, location, description, image_url) VALUES (?, ?, ?, ?)");
         
         // ถ้าสั่งทำงานแล้วสำเร็จจริง (Execution checks)
         if ($stmt->execute([$name, $location, $description, $image_url])) {

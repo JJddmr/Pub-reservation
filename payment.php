@@ -5,7 +5,7 @@
 // Middleware file handling the deposit payment process before confirming reservation
 
 // โหลดการตั้งค่าและการเชื่อมต่อกับฐานข้อมูล (Import db connection)
-require 'config/db_connect.php';
+require 'config/config.php';
 // โหลดฟังก์ชันตรวจสอบสถานะผู้ใช้งาน (Import session management)
 require 'includes/auth_session.php';
 // บังคับให้เฉพาะผู้ที่ Login เข้ามาเท่านั้นที่สามารถเข้าถึงหน้านี้ได้ (Enforce login check)
@@ -26,7 +26,7 @@ $table_id = $_GET['table_id'];
 
 // Fetch Table Details for display
 // นำ Table ID ไปดึงข้อมูลรายละเอียดเพิ่มเติมของโต๊ะบนฐานข้อมูล (Get table details from db to show to user)
-$stmt = $pdo->prepare("SELECT * FROM dining_tables WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM dining_tables WHERE table_id = ?");
 $stmt->execute([$table_id]);
 $table = $stmt->fetch();
 

@@ -4,7 +4,7 @@
 // Final processing page to save reservation and payment in the database
 
 // เชื่อมต่อฐานข้อมูล (Require database connection logic)
-require 'config/db_connect.php';
+require 'config/config.php';
 // เริ่มต้นใช้งาน Session (Require session management)
 require 'includes/auth_session.php';
 // ตรวจสอบว่าเข้าระบบหรือยัง ไม่เช่นนั้นเด้งออก (Enforce login check, otherwise redirect to login page)

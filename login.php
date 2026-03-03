@@ -3,7 +3,7 @@
 // หน้าเข้าสู่ระบบ (Login page for users and admins)
 
 // เรียกใช้งานไฟล์เชื่อมต่อฐานข้อมูล (Require database connection logic)
-require 'config/db_connect.php';
+require 'config/config.php';
 // เรียกใช้งานระบบจัดการ Session ซึ่งเปิดใช้งาน session_start() (Require session management file which initializes session)
 require 'includes/auth_session.php'; // Has session_start()
 

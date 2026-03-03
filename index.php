@@ -3,7 +3,7 @@
 // หน้าแรกของเว็บไซต์ (Homepage entry point)
 
 // เรียกใช้งานไฟล์เชื่อมต่อฐานข้อมูล (Require database connection logic)
-require 'config/db_connect.php';
+require 'config/config.php';
 // เรียกใช้งานระบบจัดการ Session (Require session management for authentication)
 require 'includes/auth_session.php';
 // Don't enforce login here, just show different content
@@ -18,7 +18,7 @@ require 'includes/auth_session.php';
     <?php include 'includes/head.php'; ?>
     <?php
     // คำสั่ง SQL เพื่อดึงรายการร้าน (สาขา) ทั้งหมดออกมาแสดง (SQL query to retrieve all pubs ordered by name)
-    $stmt = $pdo->query("SELECT * FROM pubs ORDER BY name");
+    $stmt = $pdo->query("SELECT * FROM pubs ORDER BY pub_name");
     // ฟอร์แมตข้อมูลดึดงออกมาเก็บในรูปแบบอาร์เรย์ (Fetch all rows into an associative array)
     $pubs = $stmt->fetchAll();
     ?>
@@ -80,7 +80,7 @@ require 'includes/auth_session.php';
                 <!-- ส่วนกล่องภาพร้าน (Image container for pub) -->
                 <div class="h-48 overflow-hidden relative">
                     <!-- แสดงภาพประกอบของร้านนั้น (Display pub image) -->
-                    <img src="<?php echo htmlspecialchars($pub['image_url']); ?>" alt="<?php echo htmlspecialchars($pub['name']); ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <img src="<?php echo htmlspecialchars($pub['image_url']); ?>" alt="<?php echo htmlspecialchars($pub['pub_name']); ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
                     <!-- แสดงป้ายแท็กเป็นย่านที่ตั้งของร้าน (Badge showing the pub location) -->
                     <div class="absolute top-0 right-0 bg-black/70 px-3 py-1 m-2 rounded text-xs text-secondary font-bold border border-secondary">
                         <?php echo htmlspecialchars($pub['location']); ?>
@@ -89,14 +89,14 @@ require 'includes/auth_session.php';
                 <!-- ส่วนข้อมูงรายละเอียดร้านภายในกล่อง (Card body for text and buttons) -->
                 <div class="p-6 flex-grow flex flex-col">
                     <!-- แสดงชื่อของสาขา (Pub name display) -->
-                    <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-primary transition-colors"><?php echo htmlspecialchars($pub['name']); ?></h3>
+                    <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-primary transition-colors"><?php echo htmlspecialchars($pub['pub_name']); ?></h3>
                     <!-- แสดงรายละเอียดต่างๆ ของสาขานั้น (Pub description) -->
                     <p class="text-gray-400 mb-6 flex-grow"><?php echo htmlspecialchars($pub['description']); ?></p>
                     
                     <!-- ตรวจสอบว่าล็อกอินแล้วหรือยัง (Check login state to toggle button link) -->
                     <?php if(isset($_SESSION['user_id'])): ?>
                         <!-- เลือกรหัสร้านและส่งไปยังหน้าการจอง (Provide reservation link with the selected pub ID) -->
-                        <a href="reservation.php?pub_id=<?php echo $pub['id']; ?>" class="btn w-full block">Book Here</a>
+                        <a href="reservation.php?pub_id=<?php echo $pub['pub_id']; ?>" class="btn w-full block">Book Here</a>
                     <?php else: ?>
                         <!-- หากยังไม่ล็อกอิน ให้ปุ่มส่งไปหน้าล็อกอิน (Direct guest users to login page instead) -->
                         <a href="login.php" class="btn bg-gray-700 text-gray-300 hover:bg-gray-600 w-full block">Login to Book</a>

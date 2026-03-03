@@ -49,9 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             // สร้าง URL ตรวจสอบผ่านตัวแปรแบบ GET (Construct API URL with query strings)
-            const url = `api/get_tables.php?date=${date}&time=${time}&guests=${guests}&pub_id=${pubId}`;
-            const response = await fetch(url); // ยิงคำขอไปยังเซิร์ฟเวอร์ (Fetch data from server)
-            const data = await response.json(); // แปลงผลรับที่ได้เป็นตัวแปรแบบ JSON (Parse response to JSON)
+            const params = new URLSearchParams();
+            params.append("date", date);
+            params.append("time", time);
+            params.append("guests", guests);
+            params.append("pub_id", pubId);
+
+            const response = await fetch("api/get_tables.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: params.toString()
+            });
+
+            const data = await response.json();
             
             // ถ้าเซิร์ฟเวอร์ส่ง error กลับมา (Handle error response from API)
             if (data.error) {
