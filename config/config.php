@@ -1,11 +1,5 @@
 <?php
-// config/db_connect.php
-// กำหนดตัวแปรและออบเจ็กต์เพื่อสร้างการติดต่อส่วนกลางไปยังฐานข้อมูลของระบบ 
-// Core configuration file used to connect the app with the MySQL database
-
-// ที่อยู่ของฐานข้อมูล ซึ่งปกติจะเป็น localhost ถ้ารันเซิร์ฟเวอร์ด้วยตัวเอง (Hostname for database)
 $host = 'localhost';
-// ระบุชื่อก้อน Database ตรงตามที่เรากำหนดผ่าน schema.sql (Target Database schema name)
 $db   = 'pub_reservation';
 // ชื่อผู้ใช้งานจัดการดาต้าเบส (Database root username)
 $user = 'root';

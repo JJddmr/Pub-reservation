@@ -3,7 +3,7 @@
 // หน้าต่างสำหรับสมัครสมาชิกใหม่ (Registration page for new users)
 
 // นำเข้าไฟล์เชื่อมต่อฐานข้อมูล (Require database connection logic)
-require 'config/db_connect.php';
+require 'config/config.php';
 // นำเข้าไฟล์ตรวจสอบเซสชันเพื่อเริ่มการทำงานของ session (Require auth session logic primarily to allow session_start)
 require 'includes/auth_session.php'; // For session start
 

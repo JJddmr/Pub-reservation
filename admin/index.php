@@ -3,7 +3,7 @@
 // หน้าผังหลังสำหรับจัดการคิวจองและภาพรวมระบบของผู้ดูแลระบบ (Admin backend root page managing reservations list)
 
 // ดึงแฟ้มสำหรับเชื่อมฐานข้อมูลโดยถอยกลับไป 1 โฟลเดอร์ (Include relative path to database config)
-require '../config/db_connect.php';
+require '../config/config.php';
 // ดึงแฟ้มตรวจสอบเซสชัน (Include session management)
 require '../includes/auth_session.php';
 // เรียกใช้งานคำสั่งเตะเปรียบเสมือนป้อมยาม หากสิทธิ์ไม่ใช่ 'admin' ให้เด้งออกไป (Guard clause ensuring only roles='admin' can execute further)
@@ -18,13 +18,13 @@ if (isset($_POST['action']) && isset($_POST['id'])) {
     if ($_POST['action'] == 'update') {
         $status = $_POST['status']; // เก็บสถานะใหม่ที่แอดมินเลือกจาก Dropdown (Get new status selection)
         // เตรียมคำสั่งเปลี่ยนแปลงสถานะบนตาราง reservations ของ ID นี้ (Prepare SQL UPDATE query targeting specific row)
-        $stmt = $pdo->prepare("UPDATE reservations SET status = ? WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE reservations SET status = ? WHERE reservation_id = ?");
         $stmt->execute([$status, $id]); // สั่งให้ฐานข้อมูลอัปเดตค่าทันที (Commit update query execution)
     } 
     // หากคำสั่งระบุให้ 'ลบ' รายการนี้ทิ้งอย่างถาวร (If the requested action is to completely 'delete' row)
     elseif ($_POST['action'] == 'delete') {
         // เตรียมคำสั่งลบข้อมูลแถวรหัสนั้นออกไป (Prepare standard DELETE record query)
-        $stmt = $pdo->prepare("DELETE FROM reservations WHERE id = ?");
+        $stmt = $pdo->prepare("DELETE FROM reservations WHERE reservation_id = ?");
         $stmt->execute([$id]); // สั่งให้ลบเรียบร้อย (Execute deletion)
     }
 }
@@ -33,11 +33,11 @@ if (isset($_POST['action']) && isset($_POST['id'])) {
 // สร้าง Query แบบ JOIN เพื่อไปดึงชื่อของ user, หมายเลขโต๊ะ(จาก dining_tables) และชื่อร้าน(pubs) มาทีเดียว 
 // Complex SQL string using INNER JOIN across 4 tables to assemble comprehensive reservation row data
 $stmt = $pdo->query("
-    SELECT r.*, u.username, u.full_name, t.table_number, p.name as pub_name
+    SELECT r.*, u.username, u.full_name, t.table_number, p.pub_name 
     FROM reservations r 
-    JOIN users u ON r.user_id = u.id 
-    JOIN dining_tables t ON r.table_id = t.id 
-    JOIN pubs p ON t.pub_id = p.id
+    JOIN users u ON r.user_id = u.user_id 
+    JOIN dining_tables t ON r.table_id = t.table_id 
+    JOIN pubs p ON t.pub_id = p.pub_id
     ORDER BY r.reservation_date DESC, r.reservation_time ASC
 ");
 // จัดเก็บข้อมูลรายชื่อทั้งหมดที่ Join มาได้เป็นอาร์เรย์เก็บให้ตัวแปร (Parse executed multi-dimensional output array)

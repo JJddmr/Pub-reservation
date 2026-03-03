@@ -4,7 +4,7 @@
 // Reservation page file for customers
 
 // เชื่อมต่อฐานข้อมูล (Connect to database)
-require 'config/db_connect.php';
+require 'config/config.php';
 // ดึงไฟล์ตรวจสอบเซสชันผู้ใช้ (Include user session verification)
 require 'includes/auth_session.php';
 // ตรวจสอบว่าเข้าระบบหรือยัง (Check if the user is already logged in)
@@ -25,7 +25,7 @@ checkLogin();
 
     // Fetch Pub Details
     // ดึงข้อมูลรายละเอียดของร้านสาขานั้นๆ จากฐานข้อมูล (Fetch the associated pub details from database)
-    $stmt = $pdo->prepare("SELECT * FROM pubs WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT * FROM pubs WHERE pub_id = ?");
     $stmt->execute([$pub_id]);
     $pub = $stmt->fetch();
 
@@ -36,7 +36,7 @@ checkLogin();
     }
 
     // กำหนดชื่อ Title ของหน้าเว็บให้สอดคล้องกับชื่อร้าน (Dynamic page title setting)
-    $page_title = 'Reserve - ' . htmlspecialchars($pub['name']);
+    $page_title = 'Reserve - ' . htmlspecialchars($pub['pub_name']);
     ?>
     <!-- เรียกแสดงผลส่วนหัว (HTML Head) จากไฟล์ส่วนกลาง -->
     <?php include 'includes/head.php'; ?>
@@ -52,7 +52,7 @@ checkLogin();
         <div class="container mx-auto flex justify-between items-center">
             <a href="index.php" class="text-2xl font-bold text-primary tracking-wider hover:text-white transition-colors">
                 <span class="text-sm text-gray-400 font-normal block -mb-1">Booking at</span>
-                <?php echo htmlspecialchars($pub['name']); // แสดงชื่อสาขา (Show current pub name) ?>
+                <?php echo htmlspecialchars($pub['pub_name']); // แสดงชื่อสาขา (Show current pub name) ?>
             </a>
             <div class="space-x-4">
                 <a href="index.php" class="text-gray-300 hover:text-white transition-colors">Switch Location</a>
@@ -69,7 +69,7 @@ checkLogin();
                 <h2 class="text-xl font-bold text-secondary mb-4 border-b border-gray-700 pb-2">Reservation Details</h2>
 
                 <!-- ฟอร์มเพื่อเลือกข้อมูลวัน เวลา และจำนวนคน (Form grouping input criteria) -->
-                <form id="bookingForm" action="process_payment.php" method="GET" class="space-y-4 flex-grow">
+                <form id="bookingForm" action="payment.php" method="GET" class="space-y-4 flex-grow">
                     <!-- จำรหัสสาขาเพื่อส่งต่อให้หน้าถัดไป (Pass pub_id to payment page secretly) -->
                     <input type="hidden" name="pub_id" value="<?php echo $pub_id; ?>">
                     

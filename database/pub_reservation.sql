@@ -10,11 +10,11 @@ USE pub_reservation;
 -- 1. Users Table (ตารางผู้ใช้งานทั่วไป - 10 fields)
 -- เก็บข้อมูลลูกค้าที่มาใช้บริการ (Store customer/user details)
 CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสผู้ใช้งาน (User ID)
+    user_id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสผู้ใช้งาน (User ID)
     username VARCHAR(50) NOT NULL UNIQUE, -- ชื่อผู้ใช้สำหรับล็อกอิน (Login username)
     email VARCHAR(100) NOT NULL UNIQUE, -- อีเมลผู้ใช้งาน (User email address)
-    password VARCHAR(255) NOT NULL, -- รหัสผ่านที่เข้ารหัสแล้ว (Hashed password)
-    full_name VARCHAR(100) NOT NULL, -- ชื่อ-นามสกุลจริง (Full name)
+    user_password VARCHAR(100) NOT NULL, -- รหัสผ่านที่เข้ารหัสแล้ว (Hashed password)
+    full_name VARCHAR(150) NOT NULL, -- ชื่อ-นามสกุลจริง (Full name)
     phone_number VARCHAR(20), -- เบอร์โทรศัพท์ (Phone number)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- วันที่สร้างบัญชี (Account creation time)
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- วันที่แก้ไขข้อมูลล่าสุด (Last update time)
@@ -25,18 +25,18 @@ CREATE TABLE IF NOT EXISTS users (
 -- 1.5 Admins Table (ตารางผู้ดูแลระบบ)
 -- เก็บข้อมูลพนักงาน/แอดมินดูแลระบบ (Store administrator details)
 CREATE TABLE IF NOT EXISTS admins (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสผู้ดูแลระบบ (Admin ID)
-    username VARCHAR(50) NOT NULL UNIQUE, -- ชื่อผู้ใช้แอดมิน (Admin username)
-    password VARCHAR(255) NOT NULL, -- รหัสผ่านแอดมิน (Admin password)
-    full_name VARCHAR(100) NOT NULL, -- ชื่อจริงแอดมิน (Admin full name)
+    admin_id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสผู้ดูแลระบบ (Admin ID)
+    ad_username VARCHAR(50) NOT NULL UNIQUE, -- ชื่อผู้ใช้แอดมิน (Admin username)
+    ad_password VARCHAR(255) NOT NULL, -- รหัสผ่านแอดมิน (Admin password)
+    ad_full_name VARCHAR(150) NOT NULL, -- ชื่อจริงแอดมิน (Admin full name)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP -- เวลาที่เพิ่มเข้าระบบ (Creation timestamp)
 );
 
 -- 1.8 Pubs Table (ตารางสาขา/ร้าน)
 -- เก็บข้อมูลร้านหรือสาขาต่างๆ ในระบบ (Store pub/branch information)
 CREATE TABLE IF NOT EXISTS pubs (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสร้าน/สาขา (Pub/Branch ID)
-    name VARCHAR(100) NOT NULL, -- ชื่อร้าน (Pub name)
+    pub_id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสร้าน/สาขา (Pub/Branch ID)
+    pub_name VARCHAR(100) NOT NULL, -- ชื่อร้าน (Pub name)
     description TEXT, -- รายละเอียด/คำอธิบายร้าน (Pub description)
     image_url VARCHAR(255), -- ลิงก์รูปภาพประกอบร้าน (Image URL)
     location VARCHAR(100), -- ที่ตั้ง/สถานที่ (Location/Address)
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS pubs (
 -- 2. Tables Table (ตารางข้อมูลโต๊ะ - 9 fields)
 -- เก็บข้อมูลโต๊ะภายในร้านแต่ละสาขา (Store dining tables info for each pub)
 CREATE TABLE IF NOT EXISTS dining_tables (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสโต๊ะ (Table ID)
+    table_id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสโต๊ะ (Table ID)
     pub_id INT DEFAULT 1, -- อ้างอิงรหัสร้าน (Reference to Pub ID)
     table_number VARCHAR(10) NOT NULL, -- หมายเลขโต๊ะ (Table number/name)
     capacity INT NOT NULL, -- จำนวนที่นั่งรองรับได้ (Seating capacity)
@@ -56,14 +56,14 @@ CREATE TABLE IF NOT EXISTS dining_tables (
     coord_x INT DEFAULT 0 COMMENT 'CSS left %', -- พิกัดแกน X สำหรับแสดงแผนที่ (X coordinate for map UI)
     coord_y INT DEFAULT 0 COMMENT 'CSS top %', -- พิกัดแกน Y สำหรับแสดงแผนที่ (Y coordinate for map UI)
     description TEXT, -- คำอธิบายโต๊ะเพิ่มเติม (Extra description)
-    FOREIGN KEY (pub_id) REFERENCES pubs(id) ON DELETE CASCADE, -- เชื่อมกับตารางร้าน (Connect to pubs table)
+    FOREIGN KEY (pub_id) REFERENCES pubs(pub_id) ON DELETE CASCADE, -- เชื่อมกับตารางร้าน (Connect to pubs table)
     UNIQUE KEY unique_table_per_pub (pub_id, table_number) -- ป้องกันหมายเลขโต๊ะซ้ำในสาขาเดียวกัน (Prevent duplicate table names per pub)
 );
 
 -- 3. Reservations Table (ตารางการจองโต๊ะ - 10 fields)
 -- เก็บประวัติและรายการการจองโต๊ะ (Store reservation bookings)
 CREATE TABLE IF NOT EXISTS reservations (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสการจอง (Reservation ID)
+    reservation_id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสการจอง (Reservation ID)
     user_id INT NOT NULL, -- รหัสผู้ใช้ที่จอง (ID of user who booked)
     table_id INT NOT NULL, -- รหัสโต๊ะที่ถูกจอง (ID of the reserved table)
     reservation_date DATE NOT NULL, -- วันที่เข้าใช้บริการ (Date of reservation)
@@ -73,14 +73,14 @@ CREATE TABLE IF NOT EXISTS reservations (
     status ENUM('pending', 'confirmed', 'cancelled', 'completed', 'no_show') DEFAULT 'pending', -- สถานะการจอง (Booking status)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- วันเวลาที่ทำรายการจอง (Booking timestamp)
     check_in_time DATETIME, -- เวลาที่เช็คอินเข้าร้านจริง (Actual check-in time)
-    FOREIGN KEY (user_id) REFERENCES users(id), -- เชื่อมโยงรหัสผู้ใช้ (Link to users)
-    FOREIGN KEY (table_id) REFERENCES dining_tables(id) -- เชื่อมโยงรหัสโต๊ะ (Link to tables)
+    FOREIGN KEY (user_id) REFERENCES users(user_id), -- เชื่อมโยงรหัสผู้ใช้ (Link to users)
+    FOREIGN KEY (table_id) REFERENCES dining_tables(table_id) -- เชื่อมโยงรหัสโต๊ะ (Link to tables)
 );
 
 -- 4. Payments Table (ตารางการชำระเงิน - 8 fields)
 -- เก็บข้อมูลการจ่ายเงินมัดจำ/บิล (Store deposit/bill payment details)
 CREATE TABLE IF NOT EXISTS payments (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสบิลชำระเงิน (Payment ID)
+    payment_id INT AUTO_INCREMENT PRIMARY KEY, -- รหัสบิลชำระเงิน (Payment ID)
     reservation_id INT NOT NULL, -- รหัสการจองที่เกี่ยวข้อง (Associated reservation ID)
     amount DECIMAL(10, 2) NOT NULL, -- จำนวนเงิน (Payment amount)
     method ENUM('atm', 'qrcode', 'mobile_banking', 'cash') NOT NULL, -- รูปแบบการจ่าย (Payment method)
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS payments (
     transaction_ref VARCHAR(100), -- รหัสอ้างอิงธุรกรรม (Transaction reference code from gateway)
     payment_date DATETIME DEFAULT CURRENT_TIMESTAMP, -- วันเวลาที่ชำระ (Payment timestamp)
     receipt_url VARCHAR(255), -- ลิงก์ดูใบเสร็จรับเงิน (URL to digital receipt)
-    FOREIGN KEY (reservation_id) REFERENCES reservations(id) -- เชื่อมโยงประวัติการจอง (Link to reservation)
+    FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) -- เชื่อมโยงประวัติการจอง (Link to reservation)
 );
 
 -- ==============================================
@@ -97,15 +97,15 @@ CREATE TABLE IF NOT EXISTS payments (
 -- ==============================================
 
 -- Admin User (เพิ่มข้อมูลแอดมิน)
-INSERT INTO admins (username, password, full_name) VALUES
-('admin', 'admin123', 'System Admin');
+INSERT INTO admins (ad_username, ad_password, ad_full_name) VALUES
+('admin', 'ad123', 'System Admin');
 
 -- General User (เพิ่มข้อมูลลูกค้าทดสอบ)
-INSERT INTO users (username, email, password, full_name, phone_number) VALUES
-('user1', 'user@test.com', 'admin123', 'John Doe', '0898765432');
+INSERT INTO users (username, email, user_password, full_name, phone_number) VALUES
+('user1', 'user@test.com', 'ad123', 'John Doe', '0898765432');
 
 -- Pubs (เพิ่มข้อมูลร้าน/สาขาทั้ง 2 สาขา)
-INSERT INTO pubs (name, description, image_url, location) VALUES
+INSERT INTO pubs (pub_name, description, image_url, location) VALUES
 ('NightOwl HQ', 'The original cyberpunk experience. Neon lights, retro vibes, and the best synthwave beats.', 'assets/pub_hq.jpg', 'Downtown Core'),
 ('Cyber Bar', 'A sleek, modern lounge for the digital elite. High-end cocktails and panoramic city views.', 'assets/pub_cyber.jpg', 'Tech District');
 
