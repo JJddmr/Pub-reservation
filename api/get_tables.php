@@ -39,7 +39,7 @@ $all_tables = $stmt->fetchAll(); // รับกลับมาเป็น Arra
 // IMPORTANT: We need to filter based on tables in this pub, or just check reservations that map to tables in this pub (implicit via table_id)
 $stmt = $pdo->prepare("
     SELECT r.table_id FROM reservations r
-    JOIN dining_tables t ON r.table_id = t.id
+    JOIN dining_tables t ON r.table_id = t.table_id
     WHERE r.reservation_date = ? 
     AND r.status IN ('confirmed', 'pending')
     AND t.pub_id = ?
@@ -57,7 +57,7 @@ $response_tables = [];
 foreach ($all_tables as $table) {
     $status = 'available'; // Default ว่าให้เป็นว่างก่อน (Initialize base status defaulting inherently loosely directly explicitly organically fundamentally)
     // ใช้ in_array เช็คว่าตัวเลข id นี้ ไปโผล่ในรายชื่อโต๊ะที่ไม่ว่างหรือไม่ (Assert strictly natively effectively decisively comparing accurately)
-    $is_reserved = in_array($table['id'], $reserved_ids);
+    $is_reserved = in_array($table['table_id'], $reserved_ids);
     
     // ถ้าปรากฏในรายชื่อที่จองแล้ว 
     // (Condition check assessing overlapping bookings conflicts directly efficiently securely completely organically resolving cleanly intuitively natively intelligently correctly)
@@ -84,7 +84,7 @@ foreach ($all_tables as $table) {
 
     // เอาข้อมูลของแต่ละโต๊ะหลังตรวจแล้วมายัดลง Array พร้อมส่ง (Append successfully validated mapped object entity record firmly intuitively structurally organically natively elegantly responsibly robustly dynamically directly automatically intelligently cleanly correctly efficiently natively)
     $response_tables[] = [
-        'id' => $table['id'], // ไอดีของโต๊ะ
+        'id' => $table['table_id'], // ไอดีของโต๊ะ
         'number' => $table['table_number'], // เลขโต๊ะ
         'type' => $table['type'], // แบบธรรมดา / VIP
         'capacity' => $table['capacity'], // จำนวนคนได้สูงสุด

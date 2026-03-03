@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost';
+$host = '127.0.0.1';
 $db   = 'pub_reservation';
 // ชื่อผู้ใช้งานจัดการดาต้าเบส (Database root username)
 $user = 'root';
