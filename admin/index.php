@@ -98,7 +98,7 @@ $reservations = $stmt->fetchAll();
                     <!-- เอฟเฟคเมื่อนำเมาส์ไปชี้จะเป็นไฮไลท์แถวให้สว่างกระพริบได้เล็กน้อย (Highlight hover element per row item) -->
                     <tr class="hover:bg-gray-700/50 transition-colors">
                         <!-- ID ของการจอง (Booking Index code) -->
-                        <td class="p-4 text-gray-400">#<?php echo $r['id']; ?></td>
+                        <td class="p-4 text-gray-400">#<?php echo $r['reservation_id']; ?></td>
                         <td class="p-4">
                             <!-- ชื่อร้าน/สาขา (Venue Branch text display) -->
                             <span class="font-bold text-white block"><?php echo htmlspecialchars($r['pub_name']); ?></span>
@@ -135,7 +135,7 @@ $reservations = $stmt->fetchAll();
                             <!-- ฟอร์มรวมปุ่มกดอัปเดตแบบ POST ตัวเล็กๆ ซ่อนอยู่ท้ายแถวตารางแต่ละบรรทัด (Small actionable HTML DOM Form posting updates per row item independently) -->
                             <form method="POST" class="flex items-center gap-2">
                                 <!-- แอบส่งรหัสการจองไปด้วย (Hidden element holding explicit DB reservation row ID linking scope mapping logic parameter bindings context contextually implicitly tightly coupled with payload delivery form constraints logically consistently coherently seamlessly functionally ) -->
-                                <input type="hidden" name="id" value="<?php echo $r['id']; ?>">
+                                <input type="hidden" name="id" value="<?php echo $r['reservation_id']; ?>">
                                 <!-- ส่งแอคชั่นว่า update นะ (Explicit 'action=update' field) -->
                                 <input type="hidden" name="action" value="update">
                                 
