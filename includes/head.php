@@ -18,15 +18,14 @@
             // ส่วนที่เสริมเพิ่มเติมเข้าไปนอกจากค่าเริ่มต้นของเทลวินด์ (Extend default theme settings)
             extend: {
                 colors: {
-                    primary: '#ffd700',   // สีหลัก (Gold/Yellow: Primary theme color)
-                    secondary: '#00ff41', // สีรองสำหรับเน้นปุ่ม (Neon Green: Secondary accent color)
-                    dark: '#121212',      // โหมดสว่างมืด (Dark: Dark mode shades)
-                    darker: '#0a0a0a',    // โทนสีมืดและดำสนิท (Darker: Deeper black variants)
-                    surface: '#1e1e1e',   // สีพื้นหลังกล่องโต้ตอบ (Surface: Module background shade)
-                    error: '#ff4444'      // สีเตือนเมื่อมีปัญหา (Error: Red alert color)
+                    primary: '#ccd6a6',   
+                    secondary: '#dae2b6', 
+                    dark: '#f4ead5',      
+                    darker: '#fffbe9',    
+                    surface: '#f4ead5',   
+                    error: '#ff4444'      
                 },
                 fontFamily: {
-                    // กำหนดให้ทุกองค์ประกอบใช้ฟ้อนต์ Inter (Assign 'Inter' as the base sans font)
                     sans: ['Inter', 'sans-serif'],
                 }
             }
