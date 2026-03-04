@@ -106,8 +106,8 @@ INSERT INTO users (username, email, user_password, full_name, phone_number) VALU
 
 -- Pubs (เพิ่มข้อมูลร้าน/สาขาทั้ง 2 สาขา)
 INSERT INTO pubs (pub_name, description, image_url, location) VALUES
-('NightOwl HQ', 'The original cyberpunk experience. Neon lights, retro vibes, and the best synthwave beats.', 'assets/pub_hq.jpg', 'Downtown Core'),
-('Cyber Bar', 'A sleek, modern lounge for the digital elite. High-end cocktails and panoramic city views.', 'assets/pub_cyber.jpg', 'Tech District');
+('NightOwl HQ', 'The original cyberpunk experience. Neon lights, retro vibes, and the best synthwave beats.', 'img/pub_hq.jpg', 'Downtown Core'),
+('Cyber Bar', 'A sleek, modern lounge for the digital elite. High-end cocktails and panoramic city views.', 'img/pub_cyber.jpg', 'Tech District');
 
 -- Tables (เพิ่มข้อมูลโต๊ะตั้งต้น)
 -- Standard Tables (2-4 people) at HQ (pub_id=1) 

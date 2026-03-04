@@ -103,19 +103,19 @@ $page_title = 'Table Layout - ' . htmlspecialchars($pub['pub_name']);
             </div>
         </div>
         
-        <div class="bg-surface p-4 rounded-lg flex-grow flex flex-col border border-gray-800">
+        <div class="bg-[#fdf8f5] p-4 rounded-lg flex-grow flex flex-col border border-gray-800">
             <!-- Instructions -->
-            <div class="mb-4 text-sm text-gray-400">
+            <div class="mb-4 text-sm text-gray-600">
                 <p>Drag and drop the tables below to position them. Click "Save Layout" when you are done.</p>
             </div>
 
             <!-- Map Container Area -->
-            <div class="w-full bg-black/50 rounded-lg border-2 border-gray-800 relative overflow-hidden shadow-inner flex-grow min-h-[600px]" id="mapContainer">
-                <div class="stage-marker" style="position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 30%; height: 60px; background: #1f2937; border: 1px solid #4b5563; border-top: none; color: #9ca3af; display: flex; align-items: center; justify-content: center; font-weight: bold; letter-spacing: 0.1em;">STAGE</div>
+            <div class="w-full bg-[#fffbfa] rounded-lg border-2 border-gray-800 relative overflow-hidden shadow-inner flex-grow min-h-[600px]" id="mapContainer">
+                <div class="stage-marker !bg-[#f67280] !text-[#fdf8f5] !border-[#f67280]">STAGE</div>
                 
                 <!-- Legend -->
-                <div class="absolute top-4 left-4 bg-black/70 p-2 rounded text-xs text-gray-300 pointer-events-none z-10 border border-gray-700">
-                    <div class="font-bold text-white mb-2">Table Types:</div>
+                <div class="absolute top-4 left-4 bg-[#fdf8f5] p-2 rounded text-xs text-gray-600 pointer-events-none z-10 border border-gray-700">
+                    <div class="font-bold text-primary mb-2 ">Table Types:</div>
                     <div class="flex items-center gap-2 mb-1"><span class="w-3 h-3 rounded-full bg-green-500"></span> Standard</div>
                     <div class="flex items-center gap-2 mb-1"><span class="w-3 h-3 rounded-full bg-green-500 border-4 border-yellow-400"></span> VIP</div>
                 </div>
@@ -137,28 +137,28 @@ $page_title = 'Table Layout - ' . htmlspecialchars($pub['pub_name']);
                 </div>
             </div>
             <!-- Add Table Form -->
-            <div class="mt-8 bg-black/30 p-4 rounded-lg border border-gray-700">
-                <h2 class="text-xl font-bold text-white mb-4">Add New Table</h2>
+            <div class="mt-8 bg-[#EA7B7B]/30 p-4 rounded-lg border border-gray-700">
+                <h2 class="text-xl font-bold text-primary mb-4">Add New Table</h2>
                 <form method="POST" class="flex flex-wrap gap-4 items-end">
                     <input type="hidden" name="action" value="add_table">
                     <div>
-                        <label class="block text-gray-400 text-xs mb-1">Table Number</label>
-                        <input type="text" name="table_number" required class="p-2 rounded bg-surface border border-gray-600 text-white focus:outline-none focus:border-secondary transition-colors" placeholder="e.g. T1">
+                        <label class="block text-gray-600 text-xs mb-1">Table Number</label>
+                        <input type="text" name="table_number" required class="p-2 rounded bg-[#ffe4e6] border border-gray-600 text-gray-600 focus:outline-none focus:border-secondary transition-colors" placeholder="e.g. T1">
                     </div>
                     <div>
-                        <label class="block text-gray-400 text-xs mb-1">Capacity</label>
-                        <input type="number" name="capacity" required class="p-2 rounded bg-surface border border-gray-600 text-white focus:outline-none focus:border-secondary transition-colors" value="4" min="1" max="20">
+                        <label class="block text-gray-600 text-xs mb-1">Capacity</label>
+                        <input type="number" name="capacity" required class="p-2 rounded bg-[#ffe4e6] border border-gray-600 text-gray-600 focus:outline-none focus:border-secondary transition-colors" value="4" min="1" max="20">
                     </div>
                     <div>
-                        <label class="block text-gray-400 text-xs mb-1">Type</label>
-                        <select name="type" class="p-2 rounded bg-surface border border-gray-600 text-white focus:outline-none focus:border-secondary transition-colors">
+                        <label class="block text-gray-600 text-xs mb-1">Type</label>
+                        <select name="type" class="p-2 rounded bg-[#ffe4e6] border border-gray-600 text-gray-600 focus:outline-none focus:border-secondary transition-colors">
                             <option value="standard">Standard</option>
                             <option value="vip">VIP</option>
                             <option value="large_group">Large Group</option>
                         </select>
                     </div>
                     <div>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-500 transition-colors">Add Table</button>
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-500 transition-colors">Add Table</button>
                     </div>
                 </form>
             </div>

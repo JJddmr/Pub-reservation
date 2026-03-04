@@ -87,39 +87,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- ดึงปลั๊กอินและสไตล์ชึต (Include generic HTML Head elements) -->
     <?php include 'includes/head.php'; ?>
 </head>
-<body class="bg-darker text-white font-sans min-h-screen flex flex-col items-center justify-center">
-    <!-- เตรียมกล่องหลักไว้จัดกึ่งกลางให้สวยความ (Centered container box layout wrapper) -->
-    <div class="container mx-auto px-4 text-center">
-        <!-- ตรวจสอบตัวแปร Success ว่างานข้างบนทำสำเร็จหรือไม่ (Check if the PHP Transaction was successful) -->
-        <?php if($success): ?>
-            <!-- เมื่อสำเร็จ จะสร้างกล่องขอบสีเขียวเรืองแสงอ่อนๆ (Render a success card with neon green styling) -->
-            <div class="bg-surface p-8 md:p-12 rounded-lg border-2 border-secondary shadow-[0_0_30px_rgba(0,255,65,0.2)] inline-block max-w-lg w-full">
-                <!-- อีโมจิรูปติ๊กถูกขนาดใหญ่ (Big checkmark emoji) -->
-                <div class="text-6xl mb-6">✅</div>
-                <h1 class="text-3xl md:text-4xl font-bold text-secondary mb-4">Reservation Successful!</h1>
-                <p class="text-gray-300 text-lg mb-6">Your table has been booked and deposit received.</p>
-                <div class="bg-black/30 p-4 rounded mb-8">
-                    <!-- แสดงคำอธิบายเลขแทรค (Label for Transaction Reference) -->
-                    <p class="text-sm text-gray-500 uppercase tracking-wide">Transaction Reference</p>
-                    <!-- นำเลขใบเสร็จที่เรา Generate ตอนเซฟดาต้าเบสมาแสดง (Display the mocked up Transaction reference) -->
-                    <p class="text-2xl font-mono text-white tracking-widest"><?php echo $ref; ?></p>
+<body class="bg-darker text-white font-sans min-h-screen flex flex-col">
+    <!-- เตรียมกล่องหลักไว้จัดกึ่งกลางให้สวยความ (Main content area with centering) -->
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="text-center w-full">
+            <!-- ตรวจสอบตัวแปร Success ว่างานข้างบนทำสำเร็จหรือไม่ (Check if the PHP Transaction was successful) -->
+            <?php if($success): ?>
+                <!-- เมื่อสำเร็จ จะสร้างกล่องขอบสีเขียวเรืองแสงอ่อนๆ (Render a success card with neon green styling) -->
+                <div class="bg-[#fdf5f8] p-8 md:p-12 rounded-lg border-2 border-secondary shadow-[0_0_30px_rgba(0,255,65,0.2)] inline-block max-w-lg w-full animate-bounce-short">
+                    <!-- อีโมจิรูปติ๊กถูกขนาดใหญ่ (Big checkmark emoji) -->
+                    <div class="text-6xl mb-6">✅</div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">Reservation Successful!</h1>
+                    <p class="text-gray-600 text-lg mb-6">Your table has been booked and deposit received.</p>
+                    <div class="bg-[#f67280]/40 p-4 rounded mb-8">
+                        <!-- แสดงคำอธิบายเลขแทรค (Label for Transaction Reference) -->
+                        <p class="text-sm text-gray-500 uppercase tracking-wide">Transaction Reference</p>
+                        <!-- นำเลขใบเสร็จที่เรา Generate ตอนเซฟดาต้าเบสมาแสดง (Display the mocked up Transaction reference) -->
+                        <p class="text-2xl font-mono text-gray-500 tracking-widest"><?php echo $ref; ?></p>
+                    </div>
+                    <!-- ปุ่มพากลับไปหน้าแรก (Return Home button) -->
+                    <a href="index.php" class="btn w-full py-3 text-lg">Return to Home</a>
                 </div>
-                <!-- ปุ่มพากลับไปหน้าแรก (Return Home button) -->
-                <a href="index.php" class="btn w-full py-3 text-lg">Return to Home</a>
-            </div>
-        <?php else: ?>
-            <!-- เมื่อเกิดข้อผิดพลาด จะสร้างกล่องสีแดงเรืองแสงอ่อนๆ (Render an error card with red styling if transaction failed) -->
-            <div class="bg-surface p-8 md:p-12 rounded-lg border-2 border-error shadow-[0_0_30px_rgba(255,68,68,0.2)] inline-block max-w-lg w-full">
-                <!-- อีโมจิรูปกากบาทขนาดใหญ่ (Big red cross emoji) -->
-                <div class="text-6xl mb-6">❌</div>
-                <h1 class="text-3xl md:text-4xl font-bold text-error mb-4">Booking Failed</h1>
-                <!-- นำตัวแปร $error_msg มาแสดงผลให้ปลอดภัยต่อผู้ใช้ (Output error safely to avoid XSS) -->
-                <p class="text-gray-300 text-lg mb-8"><?php echo htmlspecialchars($error_msg); ?></p>
-                <!-- ปุ่มพากลับไปหน้าแรกเมื่อทำรายการไม่ผ่าน (Return Home dark button) -->
-                <a href="index.php" class="btn w-full py-3 text-lg bg-gray-700 hover:bg-gray-600 text-white">Return to Home</a>
-            </div>
-        <?php endif; ?>
-    </div>
-    
-    <!-- แทรก Footer template (Include the shared footer template) -->
-    <?php include 'includes/footer.php'; ?>
+            <?php else: ?>
+                <!-- เมื่อเกิดข้อผิดพลาด จะสร้างกล่องสีแดงเรืองแสงอ่อนๆ (Render an error card with red styling if transaction failed) -->
+                <div class="bg-[#fdf5f8] p-8 md:p-12 rounded-lg border-2 border-error shadow-[0_0_30px_rgba(255,68,68,0.2)] inline-block max-w-lg w-full">
+                    <!-- อีโมจิรูปกากบาทขนาดใหญ่ (Big red cross emoji) -->
+                    <div class="text-6xl mb-6">❌</div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">Booking Failed</h1>
+                    <!-- นำตัวแปร $error_msg มาแสดงผลให้ปลอดภัยต่อผู้ใช้ (Output error safely to avoid XSS) -->
+                    <p class="text-gray-600 text-lg mb-8"><?php echo htmlspecialchars($error_msg); ?></p>
+                    <!-- ปุ่มพากลับไปหน้าแรกเมื่อทำรายการไม่ผ่าน (Return Home dark button) -->
+                    <a href="index.php" class="btn w-full py-3 text-lg bg-gray-700 hover:bg-gray-600 text-white">Return to Home</a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </main>

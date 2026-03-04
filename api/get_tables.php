@@ -24,6 +24,12 @@ if (!$date || !$time) {
     exit; // จบสคริปต์ (Terminate logic safely)
 }
 
+// Time Validation (17:00 - 03:00) using global helper
+if (!isReservationTimeValid($time)) {
+    echo json_encode(['error' => 'Reservations are only available between 17:00 and 03:00.']);
+    exit;
+}
+
 // 1. Get all tables for the selected pub
 // ดึงข้อมูลโต๊ะทั้งหมดที่มีอยู่ในร้านสาขานั้นออกมาแบบสดๆ ทุกประเภท 
 // (Query to fetch universally all tables strictly bounded natively by matching the pub_id)

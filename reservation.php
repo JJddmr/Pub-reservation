@@ -9,6 +9,10 @@ require 'config/config.php';
 require 'includes/auth_session.php';
 // ตรวจสอบว่าเข้าระบบหรือยัง (Check if the user is already logged in)
 checkLogin();
+
+// Check if the current time is within the booking window (17:00 - 03:00)
+$current_h = (int)date('H');
+$is_system_open = ($current_h >= 17 || $current_h < 3);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,7 +72,20 @@ checkLogin();
             <div class="w-full md:w-1/3 lg:w-1/4 bg-[#fdf8f5] p-6 rounded-lg border border-[#f67280] flex flex-col shadow-lg">
                 <h2 class="text-xl font-bold text-[#f67280] mb-4 border-b border-[#f67280] pb-2">Reservation Details</h2>
 
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4 text-sm" role="alert">
+                        <span class="block sm:inline"><?php echo htmlspecialchars($_GET['error']); ?></span>
+                    </div>
+                <?php endif; ?>
+
                 <!-- ฟอร์มเพื่อเลือกข้อมูลวัน เวลา และจำนวนคน (Form grouping input criteria) -->
+                <div class="mb-4">
+                    <span class="text-xs font-bold uppercase px-2 py-1 rounded <?php echo $is_system_open ? 'bg-green-500/20 text-green-600 border border-green-500' : 'bg-red-500/20 text-red-600 border border-red-500'; ?>">
+                        ● <?php echo $is_system_open ? 'Booking Open' : 'Booking Closed'; ?>
+                    </span>
+                    <p class="text-[10px] text-gray-400 mt-1">Available slots: 17:00 - 03:00</p>
+                </div>
+
                 <form id="bookingForm" action="payment.php" method="GET" class="space-y-4 flex-grow">
                     <!-- จำรหัสสาขาเพื่อส่งต่อให้หน้าถัดไป (Pass pub_id to payment page secretly) -->
                     <input type="hidden" name="pub_id" value="<?php echo $pub_id; ?>">
@@ -90,7 +107,9 @@ checkLogin();
                     </div>
 
                     <!-- ปุ่มสั่งให้ดึงข้อมูลแผนผังพร้อมอัปเดต (Trigger button for mapping load) -->
-                    <button type="button" id="updateMapBtn" class="btn w-full mt-4">Update Map</button>
+                    <button type="button" id="updateMapBtn" class="btn w-full mt-4" <?php if(!$is_system_open) echo 'disabled style="opacity:0.5; cursor:not-allowed;"'; ?>>
+                        <?php echo $is_system_open ? 'Update Map' : 'System Closed (17:00-03:00)'; ?>
+                    </button>
 
                     <hr class="border-gray-700 my-4">
 

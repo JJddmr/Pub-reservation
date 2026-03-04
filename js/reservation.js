@@ -37,6 +37,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return; // หยุดการทำงานถ้าข้อมูลไม่ครบ (Exit if inputs are empty)
         }
 
+        // Time Validation (17:00 - 03:00)
+        const [hours, minutes] = time.split(':').map(Number);
+        const totalMinutes = hours * 60 + minutes;
+        const startMinutes = 17 * 60; // 17:00
+        const endMinutes = 3 * 60;   // 03:00 (Next day morning)
+
+        // Check window: 17:00 to 23:59 OR 00:00 to 03:00
+        const isValidTime = totalMinutes >= startMinutes || totalMinutes < endMinutes;
+
+        if (!isValidTime) {
+            alert("Reservations are only available between 17:00 and 03:00.");
+            return;
+        }
+
         // ดึงรหัสสาขาจากตัวแปรโกลบอล (Use the global constant CURRENT_PUB_ID defined in PHP)
         const pubId = (typeof CURRENT_PUB_ID !== 'undefined') ? CURRENT_PUB_ID : 1; // ใช้ 1 เป็นค่าพื้นฐานถ้าไม่มี (Fallback to 1)
 

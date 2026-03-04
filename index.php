@@ -33,7 +33,7 @@ require 'includes/auth_session.php';
             <div class="space-x-4">
                 <?php if(isset($_SESSION['user_id'])): ?>
                     <!-- แสดงชื่อผู้ใช้ (Display greeting message with username) -->
-                    <span class="text-gray-300">Welcome, <span class="text-secondary font-bold"><?php echo htmlspecialchars($_SESSION['username']); ?></span></span>
+                    <span class="text-gray-300">Welcome, <span class="text-primary font-bold"><?php echo htmlspecialchars($_SESSION['username']); ?></span></span>
                     
                     <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                         <!-- แสดงปุ่มกลับเข้าหลังบ้านเฉพาะแอดมิน (Admin dashboard link) -->

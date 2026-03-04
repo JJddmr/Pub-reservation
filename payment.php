@@ -19,10 +19,16 @@ if (!isset($_GET['date']) || !isset($_GET['time']) || !isset($_GET['table_id']))
 }
 
 // รับค่าจากตัวแปร URL และนำข้อมูลมาเก็บไว้ในตัวแปร PHP (Extract GET parameters into variables)
-$date = $_GET['date'];
-$time = $_GET['time'];
-$guests = $_GET['guests'];
-$table_id = $_GET['table_id'];
+$date = $_GET['date'] ?? null;
+$time = $_GET['time'] ?? null;
+$guests = $_GET['guests'] ?? 1;
+$table_id = $_GET['table_id'] ?? null;
+
+// Validate Time Slot
+if (!isReservationTimeValid($time)) {
+    header("Location: reservation.php?error=Invalid time selected.");
+    exit();
+}
 
 // Fetch Table Details for display
 // นำ Table ID ไปดึงข้อมูลรายละเอียดเพิ่มเติมของโต๊ะบนฐานข้อมูล (Get table details from db to show to user)

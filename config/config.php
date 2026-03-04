@@ -1,4 +1,15 @@
 <?php
+date_default_timezone_set('Asia/Bangkok');
+
+function isReservationTimeValid($time) {
+    if (!$time) return false;
+    list($hours, $minutes) = explode(':', $time);
+    $totalMinutes = intval($hours) * 60 + intval($minutes);
+    $startMin = 17 * 60; // 17:00
+    $endMin = 3 * 60;   // 03:00
+    return ($totalMinutes >= $startMin || $totalMinutes < $endMin);
+}
+
 $host = 'localhost';
 $db   = 'pub_reservation';
 // ชื่อผู้ใช้งานจัดการดาต้าเบส (Database root username)
