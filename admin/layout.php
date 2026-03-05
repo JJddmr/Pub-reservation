@@ -53,6 +53,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
+// Handle Delete Table
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_table') {
+    $del_id = $_POST['table_id'];
+    if ($del_id) {
+        $stmt = $pdo->prepare("DELETE FROM dining_tables WHERE table_id = ? AND pub_id = ?");
+        $stmt->execute([$del_id, $pub_id]);
+        header("Location: layout.php?pub_id=" . $pub_id);
+        exit;
+    }
+}
+
+// Handle Rename Table
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'rename_table') {
+    $rename_id = $_POST['table_id'];
+    $new_name = trim($_POST['new_name']);
+    if ($rename_id && $new_name !== '') {
+        $stmt = $pdo->prepare("UPDATE dining_tables SET table_number = ? WHERE table_id = ? AND pub_id = ?");
+        $stmt->execute([$new_name, $rename_id, $pub_id]);
+        header("Location: layout.php?pub_id=" . $pub_id);
+        exit;
+    }
+}
+
 // Fetch tables for this pub
 $stmt = $pdo->prepare("SELECT * FROM dining_tables WHERE pub_id = ?");
 $stmt->execute([$pub_id]);
@@ -129,6 +152,23 @@ $page_title = 'Table Layout - ' . htmlspecialchars($pub['pub_name']);
                              data-x="<?php echo $t['coord_x']; ?>"
                              data-y="<?php echo $t['coord_y']; ?>">
                             <?php echo htmlspecialchars($t['table_number']); ?>
+                            <form method="POST" class="absolute -top-3 -right-6 p-0 m-0 z-50 flex gap-1 transform translate-x-1/2">
+                                <input type="hidden" name="action" value="">
+                                <input type="hidden" name="table_id" value="<?php echo $t['table_id']; ?>">
+                                <input type="hidden" name="new_name" id="new_name_<?php echo $t['table_id']; ?>" value="">
+                                
+                                <!-- Rename Button -->
+                                <button type="button" class="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-blue-600 shadow focus:outline-none" 
+                                        onmousedown="event.stopPropagation();" 
+                                        ontouchstart="event.stopPropagation();" 
+                                        onclick="event.stopPropagation(); let n = prompt('Enter new table name:', '<?php echo htmlspecialchars($t['table_number']); ?>'); if(n && n.trim() !== '') { document.getElementById('new_name_<?php echo $t['table_id']; ?>').value = n; this.form.action.value='rename_table'; this.form.submit(); }" title="Rename Table">✎</button>
+                                
+                                <!-- Delete Button -->
+                                <button type="button" class="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-red-600 shadow focus:outline-none" 
+                                        onmousedown="event.stopPropagation();" 
+                                        ontouchstart="event.stopPropagation();" 
+                                        onclick="event.stopPropagation(); if(confirm('Delete table <?php echo htmlspecialchars($t['table_number']); ?>?')) { this.form.action.value='delete_table'; this.form.submit(); }" title="Delete Table">&times;</button>
+                            </form>
                         </div>
                     <?php endforeach; ?>
                     <?php if(empty($tables)): ?>
